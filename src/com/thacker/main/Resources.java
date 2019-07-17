@@ -22,4 +22,8 @@ public class Resources {
             "5) Quit"
     };
 
+    public final static String filename = "/home/james/data.dat";
+
+    public final static String verification = "56E9734A7";
+
 }
