@@ -10,49 +10,69 @@ public class DataFileLogic {
      * Class handles all operations on the data file
      */
 
-    private File file = null;
-    private DataInputStream fileIn = null;
-    private DataOutputStream fileOut = null;
+    private RandomAccessFile rfile;
 
     public DataFileLogic(){
 
-        //Check if file exists
-        file = new File(Resources.filename);
 
-        //Test if file exists
-        if(!file.exists()){
-            createFile(file);
+
+        if(checkFileStatus()){
+            linkFile();
+        }else {
+            createFile();
         }
 
         //Verify File
-        if(!verify(file)){
-            deleteFile(file);
-            createFile(file);
+        if(!verify()){
+            System.out.println("file corrupt");
+            deleteFile();
+            createFile();
         }
+
+
+
+
+
+
     }
 
-    private void createFile(File file){
+    private boolean checkFileStatus(){
+        File file = new File(Resources.filename);
+
+        //Check if file exists
+        return file.exists();
+    }
+
+    private void closeFile(){
         try {
-            file.createNewFile();
-            fileOut = new DataOutputStream(new FileOutputStream(file));
-            fileOut.writeUTF(Resources.verification);
-            fileOut.flush();
-            fileOut.close();
-        } catch (IOException e) {
+            rfile.close();
+        }catch (IOException e){}
+    }
 
+    private void linkFile(){
+        try {
+            rfile = new RandomAccessFile(Resources.filename, "rw");
+        }catch(FileNotFoundException e){
+            System.out.println("E-101: File Not Found");
         }
     }
 
-    private void deleteFile(File file){
-        file.delete();
+    private void createFile(){
+        try {
+            linkFile();
+            rfile.writeUTF(Resources.verification);
+            rfile.seek(0);
+        } catch (IOException e) {}
     }
 
-    private boolean verify(File file){
+    private void deleteFile(){
+        new File(Resources.filename).delete();
+    }
+
+    private boolean verify(){
 
         try{
-            fileIn = new DataInputStream(new FileInputStream(file));
-            String temp = fileIn.readUTF();
-            if(temp.equals(Resources.verification)){
+            if(rfile.readUTF().equals(Resources.verification)){
                 return true;
             }else{
                 return false;

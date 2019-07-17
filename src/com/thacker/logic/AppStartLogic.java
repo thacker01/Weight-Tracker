@@ -12,6 +12,8 @@ public class AppStartLogic {
      */
 
     private static AppStartLogic instance = null;
+    private DataFileLogic dataFile = null;
+    private Scanner in = null;
 
     //Private constructor to prevent create a new instance from outside of class
     private AppStartLogic(){};
@@ -31,9 +33,10 @@ public class AppStartLogic {
      */
     public boolean begin(){
 
-        ///////////////////////////////////////////////////Check and or create data file
+        //Check and or create data file
+        dataFile = new DataFileLogic();
 
-        Scanner in = new Scanner(System.in);
+        in = new Scanner(System.in);
         int userInput = 0;
 
         //Create and display the application menu
