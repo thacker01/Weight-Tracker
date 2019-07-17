@@ -1,6 +1,4 @@
-package com.thacker.logic;
-
-import com.thacker.main.Resources;
+package com.thacker.main;
 
 public class Menu {
 

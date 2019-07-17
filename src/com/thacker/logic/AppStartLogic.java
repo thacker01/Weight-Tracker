@@ -1,7 +1,7 @@
 package com.thacker.logic;
 
 import com.thacker.main.Resources;
-import com.thacker.logic.Menu;
+import com.thacker.main.Menu;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
