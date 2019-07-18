@@ -14,6 +14,7 @@ public class AppStartLogic {
     private static AppStartLogic instance = null;
     private DataFileLogic dataFile = null;
     private Scanner in = null;
+    private boolean terminate = false;
 
     //Private constructor to prevent create a new instance from outside of class
     private AppStartLogic(){};
@@ -31,7 +32,7 @@ public class AppStartLogic {
      * Starts the application
      * @return whether the application completed successfully or not
      */
-    public boolean begin(){
+    public void begin(){
 
         //Check and or create data file
         dataFile = new DataFileLogic();
@@ -47,45 +48,60 @@ public class AppStartLogic {
         Menu.printMenu();
 
         //Begin main application loop
-        while (true){
+        while (!terminate){
 
             //Get user input
+            int choice = getChoice();
 
-            /////////////////////////////////////////////////CLEAN THIS UP
-
-            System.out.print("\nPlease select an option[1-" + Resources.options.length + "]: ");
-
-            try{
-                userInput = in.nextInt();
-            }catch(InputMismatchException e){
-                in.nextLine();
-            }
-
-            /**Check user input*/
-
-            if(userInput < 1 || userInput > Resources.options.length){
-                System.out.println("Sorry, your choice was incorrect. Please select a valid option");
+            if(choice == -1){
                 continue;
             }
 
-            /**Perform chosen operation*/
-            break;
+            //Perform chosen operation
+            execute(choice);
+
         }
-
-
-
-
-        return true;
     }
 
+    /**
+     * Executes the option specified by the user
+     * @param choice represents the user choice
+     */
+    private void execute(int choice){
+        switch(choice){
+            case 0:
+                System.out.println("Goodbye and have a nice day!");
+                this.terminate = true;
+        }
+    }
 
-//
-//
-//
-//
-//
-//
-//
-//
+    /**
+     * Get and validate user choice
+     * @return valid choice
+     */
+    private int getChoice(){
+
+        int userInput = -1;
+
+        //Prompt user for choice
+        System.out.print("\nPlease select an option[1-" + Resources.options.length + "]: ");
+
+        //Get input
+        try{
+            userInput = in.nextInt();
+        }catch(InputMismatchException e){
+            if(in.nextLine().equalsIgnoreCase("q")){
+                userInput = 0;
+            }
+        }
+
+        //Verify user input
+        if(userInput != 0 && (userInput < 1 || userInput > Resources.options.length)){
+            System.out.println("Sorry, your choice was incorrect. Please select a valid option");
+            userInput = -1;
+        }
+
+        return userInput;
+    }
 
 }

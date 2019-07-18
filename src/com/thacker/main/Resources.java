@@ -6,7 +6,7 @@ public class Resources {
      * Class contains strings and other data used by the application
      */
 
-    public final static String version = "0.01";
+    public final static String version = "0.02";
 
     public final static String appName = "Weight Tracker";
 
@@ -19,7 +19,7 @@ public class Resources {
             "2) Enter a new weight",
             "3) View your statistics",
             "4) Logout",
-            "5) Quit"
+            "q) Quit"
     };
 
     public final static String filename = "/home/james/data.dat";
